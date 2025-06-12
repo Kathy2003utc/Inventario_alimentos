@@ -30,11 +30,22 @@
                 <td>{{ proveedor.nombre }}</td>
                 <td>{{ proveedor.telefono }}</td>
                 
-                <td class="text-center">
+                <td>
                   {% if proveedor.pdf_certificado_sanitario %}
-                    <a href="{{ proveedor.pdf_certificado_sanitario.url }}" target="_blank" class="btn btn-outline-secondary btn-sm">
-                      <i class="bi bi-file-earmark-pdf"></i> Ver PDF
-                    </a>
+                    <!-- Vista previa del PDF en iframe -->
+                    <iframe 
+                      src="{{ proveedor.pdf_certificado_sanitario.url }}" 
+                      width="300" 
+                      height="250"
+                      style="border: 1px solid #ddd; background: #f8f9fa;"
+                      title="Vista previa del certificado sanitario"
+                      type="application/pdf">
+                    </iframe>
+                    <br><br>
+                    <p>{{ proveedor.pdf_certificado_sanitario.name|slice:"12:" }}</p>
+                    <br>
+                    <a href="{{ proveedor.pdf_certificado_sanitario.url }}" download class="btn btn-sm btn-primary">Descargar</a>
+                    <a href="{{ proveedor.pdf_certificado_sanitario.url }}" target="_blank" class="btn btn-sm btn-secondary">Ver en pestaña</a>
                   {% else %}
                     Ninguno
                   {% endif %}
