@@ -89,4 +89,22 @@
     });
   }
 </script>
+
+<script>
+    $(document).ready(function() {
+        let table = new DataTable('#tbl_alimentos', {
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/2.3.1/i18n/es-ES.json'
+            },
+            dom: 'Bfrtip', 
+            buttons: [
+                'copy',
+                'csv',
+                'excel',
+                'pdf',
+                'print'
+            ]
+        });
+    });
+</script>
 {% endblock %}
