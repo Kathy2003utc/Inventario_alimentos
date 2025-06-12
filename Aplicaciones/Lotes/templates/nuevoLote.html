@@ -1,0 +1,110 @@
+{% extends 'plantilla.html' %}
+{% load static %}
+{% block contenido %} 
+
+<br><br><br>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-5" style="background-color: #feffff;">
+                <h2 class="text-center text-success mb-4">Nuevo Lote</h2>
+                <hr class="mb-4">
+                <form id="frm_nuevo_lote" method="post" action="/guardarLote/" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Alimento -->
+                    <div class="mb-4">
+                        <label for="alimento" class="form-label fw-semibold">Alimento</label>
+                        <select name="alimento" id="alimento" class="form-select rounded-3 shadow-sm" required>
+                            <option value="">Seleccione un alimento</option>
+                            {% for alimento in alimentos %}
+                                <option value="{{ alimento.id }}">{{ alimento.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Proveedor -->
+                    <div class="mb-4">
+                        <label for="proveedor" class="form-label fw-semibold">Proveedor</label>
+                        <select name="proveedor" id="proveedor" class="form-select rounded-3 shadow-sm" required>
+                            <option value="">Seleccione un proveedor</option>
+                            {% for proveedor in proveedores %}
+                                <option value="{{ proveedor.id }}">{{ proveedor.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Fecha de vencimiento -->
+                    <div class="form-floating mb-4">
+                        <input type="date" name="fecha_vencimiento" id="fecha_vencimiento" class="form-control rounded-3 shadow-sm" required>
+                        <label for="fecha_vencimiento">Fecha de vencimiento</label>
+                    </div>
+
+                    <!-- Cantidad -->
+                    <div class="form-floating mb-4">
+                        <input type="number" name="cantidad" id="cantidad" class="form-control rounded-3 shadow-sm" min="1" required>
+                        <label for="cantidad">Cantidad (unidades)</label>
+                    </div>
+
+                    <!-- PDF Factura -->
+                    <div class="mb-4">
+                        <label for="pdf_factura" class="form-label fw-semibold">Factura (PDF)</label>
+                        <input type="file" name="pdf_factura" id="pdf_factura" class="form-control rounded-3 shadow-sm">
+                    </div>
+
+                    <!-- Botones -->
+                    <div class="text-center mt-4">
+                        <button class="btn btn-success btn-lg px-4 me-2 rounded-pill shadow" type="submit">
+                            <i class="fa fa-save me-1"></i> Guardar
+                        </button>
+                        <a href="/listaLotes/" class="btn btn-outline-danger btn-lg px-4 rounded-pill shadow">
+                            <i class="fa fa-times me-1"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Validación con jQuery -->
+<script>
+    $("#frm_nuevo_lote").validate({
+        rules: {
+            alimento: { required: true },
+            proveedor: { required: true },
+            fecha_vencimiento: { required: true, date: true },
+            cantidad: { required: true, min: 1 },
+            pdf_factura: { extension: "pdf" }
+        },
+        messages: {
+            alimento: { required: "Seleccione un alimento" },
+            proveedor: { required: "Seleccione un proveedor" },
+            fecha_vencimiento: {
+                required: "Ingrese la fecha de vencimiento",
+                date: "Ingrese una fecha válida"
+            },
+            cantidad: {
+                required: "Ingrese una cantidad",
+                min: "Debe ser al menos 1"
+            },
+            pdf_factura: {
+                extension: "Solo se permite subir archivos en formato PDF"
+            }
+        }
+    });
+</script>
+
+<!-- Configuración de FileInput -->
+<script>
+    $("#pdf_factura").fileinput({
+        language: "es",
+        allowedFileExtensions: ["pdf"],
+        showCaption: false,
+        dropZoneEnabled: true,
+        showClose: false
+    });
+</script>
+
+<br><br><br>
+{% endblock %}
