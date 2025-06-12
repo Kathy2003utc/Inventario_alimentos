@@ -1,0 +1,96 @@
+{% extends 'plantilla.html' %}
+{% load static %}
+{% block contenido %}
+
+<br><br><br>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-5" style="background-color: #feffff;">
+                <h2 class="text-center text-success mb-4">Editar Alimento</h2>
+                <hr class="mb-4">
+                <form id="frm_editar_alimento" method="post" action="/procesarEdicionAlimento/" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ alimentoEditar.id }}">
+
+                    <div class="form-floating mb-4">
+                        <input type="text" name="nombre" id="nombre" class="form-control rounded-3 shadow-sm" value="{{ alimentoEditar.nombre }}" placeholder="Nombre del alimento" required>
+                        <label for="nombre">Nombre del alimento</label>
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <input type="text" name="tipo" id="tipo" class="form-control rounded-3 shadow-sm" value="{{ alimentoEditar.tipo }}" placeholder="Tipo de alimento" required>
+                        <label for="tipo">Tipo de alimento</label>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="foto_alimento" class="form-label fw-semibold">Foto del alimento</label>
+                        <input type="file" name="foto_alimento" id="foto_alimento" class="form-control rounded-3 shadow-sm">
+                        {% if alimentoEditar.foto_alimento %}
+                            <div class="mt-3 text-center">
+                                <img src="{{ alimentoEditar.foto_alimento.url }}" alt="Imagen actual" class="img-thumbnail" width="150">
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-success btn-lg px-4 me-2 rounded-pill shadow">
+                            <i class="fa fa-save me-1"></i> Actualizar
+                        </button>
+                        <a href="/listaAlimentos/" class="btn btn-outline-danger btn-lg px-4 rounded-pill shadow">
+                            <i class="fa fa-times me-1"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#frm_editar_alimento").validate({
+        rules: {
+            nombre: {
+                required: true,
+                minlength: 3,
+                maxlength: 100
+            },
+            tipo: {
+                required: true,
+                minlength: 3,
+                maxlength: 50
+            },
+            foto_alimento: {
+                extension: "jpg|jpeg|png"
+            }
+        },
+        messages: {
+            nombre: {
+                required: "Por favor, ingrese el nombre del alimento",
+                minlength: "Debe tener al menos 3 caracteres",
+                maxlength: "No debe exceder los 100 caracteres"
+            },
+            tipo: {
+                required: "Por favor, ingrese el tipo de alimento",
+                minlength: "Debe tener al menos 3 caracteres",
+                maxlength: "No debe exceder los 50 caracteres"
+            },
+            foto_alimento: {
+                extension: "Solo se permiten archivos JPG, JPEG o PNG"
+            }
+        }
+    });
+</script>
+
+<script>
+    $("#foto_alimento").fileinput({
+        language: "es",
+        allowedFileExtensions: ["png", "jpg", "jpeg"],
+        showCaption: false,
+        dropZoneEnabled: true,
+        showClose: false
+    });
+</script>
+
+<br><br><br>
+{% endblock %}
