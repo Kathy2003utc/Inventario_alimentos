@@ -1,0 +1,98 @@
+{% extends 'plantilla.html' %}
+{% load static %}
+{% block contenido %}
+
+<br><br><br>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-5" style="background-color: #feffff;">
+                <h2 class="text-center text-primary mb-4">Editar Proveedor</h2>
+                <hr class="mb-4">
+                <form id="frm_editar_proveedor" method="post" action="/procesarEdicionProveedor/" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ proveedorEditar.id }}">
+
+                    <div class="form-floating mb-4">
+                        <input type="text" name="nombre" id="nombre" class="form-control rounded-3 shadow-sm" value="{{ proveedorEditar.nombre }}" placeholder="Nombre del proveedor" required>
+                        <label for="nombre">Nombre del proveedor</label>
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <input type="text" name="telefono" id="telefono" class="form-control rounded-3 shadow-sm" value="{{ proveedorEditar.telefono }}" placeholder="Teléfono" required>
+                        <label for="telefono">Teléfono</label>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="pdf_certificado_sanitario" class="form-label fw-semibold">Certificado Sanitario (PDF)</label>
+                        <input type="file" name="pdf_certificado_sanitario" id="pdf_certificado_sanitario" class="form-control rounded-3 shadow-sm">
+                        {% if proveedorEditar.pdf_certificado_sanitario %}
+                            <div class="mt-3 text-center">
+                                <a href="{{ proveedorEditar.pdf_certificado_sanitario.url }}" target="_blank" class="btn btn-outline-secondary rounded-pill shadow-sm">
+                                    Ver archivo actual
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg px-4 me-2 rounded-pill shadow">
+                            <i class="fa fa-save me-1"></i> Actualizar
+                        </button>
+                        <a href="/listaProveedores/" class="btn btn-outline-danger btn-lg px-4 rounded-pill shadow">
+                            <i class="fa fa-times me-1"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#frm_editar_proveedor").validate({
+        rules: {
+            nombre: {
+                required: true,
+                minlength: 3,
+                maxlength: 100
+            },
+            telefono: {
+                required: true,
+                minlength: 7,
+                maxlength: 20
+            },
+            pdf_certificado_sanitario: {
+                extension: "pdf"
+            }
+        },
+        messages: {
+            nombre: {
+                required: "Por favor, ingrese el nombre del proveedor",
+                minlength: "Debe tener al menos 3 caracteres",
+                maxlength: "No debe exceder los 100 caracteres"
+            },
+            telefono: {
+                required: "Por favor, ingrese el teléfono",
+                minlength: "Debe tener al menos 7 caracteres",
+                maxlength: "No debe exceder los 20 caracteres"
+            },
+            pdf_certificado_sanitario: {
+                extension: "Solo se permite archivos PDF"
+            }
+        }
+    });
+</script>
+
+<script>
+    $("#pdf_certificado_sanitario").fileinput({
+        language: "es",
+        allowedFileExtensions: ["pdf"],
+        showCaption: false,
+        dropZoneEnabled: true,
+        showClose: false
+    });
+</script>
+
+<br><br><br>
+{% endblock %}
