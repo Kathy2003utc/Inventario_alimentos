@@ -3,7 +3,7 @@ from django.contrib import messages
 from .models import Proveedor
 
 # Listar proveedores
-def listaProveedores(request):
+def listaProveedor(request):
     proveedorListado = Proveedor.objects.all()
     return render(request, "listaProveedor.html", {'Proveedores': proveedorListado})
 
