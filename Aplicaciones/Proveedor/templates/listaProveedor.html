@@ -1,0 +1,92 @@
+{% extends 'plantilla.html' %}
+{% load static %}
+
+{% block contenido %}
+<section class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <h1 class="mb-4 text-center">Listado de Proveedores</h1>
+      <div class="text-end mb-3">
+        <a href="nuevoProveedor/" class="btn btn-success">
+          <i class="bi bi-plus-circle"></i> Agregar Proveedor
+        </a>
+      </div>
+
+      <div class="table-responsive">
+        <table id="tbl_proveedores" class="table table-bordered table-striped table-hover align-middle">
+          <thead class="table-primary text-center">
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Teléfono</th>
+              <th>Certificado Sanitario (PDF)</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for proveedor in Proveedores %}
+              <tr>
+                <td>{{ proveedor.id }}</td>
+                <td>{{ proveedor.nombre }}</td>
+                <td>{{ proveedor.telefono }}</td>
+                
+                <td class="text-center">
+                  {% if proveedor.pdf_certificado_sanitario %}
+                    <a href="{{ proveedor.pdf_certificado_sanitario.url }}" target="_blank" class="btn btn-outline-secondary btn-sm">
+                      <i class="bi bi-file-earmark-pdf"></i> Ver PDF
+                    </a>
+                  {% else %}
+                    Ninguno
+                  {% endif %}
+                </td>
+
+                <td class="text-center">
+                  <a href="/editarProveedor/{{ proveedor.id }}" class="btn btn-outline-warning btn-sm" title="Editar">
+                    <i class="bi bi-pencil"></i>
+                  </a>
+                  <a href="#" class="btn btn-outline-danger btn-sm" title="Eliminar" onclick="confirmarEliminacion('{{ proveedor.id }}')">
+                    <i class="bi bi-trash"></i>
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <script>
+          $(document).ready(function() {
+              $('#tbl_proveedores').DataTable({
+                  language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+                  },
+                  dom: 'Bfrtip',
+                  buttons: [
+                      'copy', 'csv', 'excel', 'pdf', 'print'
+                  ]
+              });
+          });
+        </script>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function confirmarEliminacion(id) {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: '¡Esta acción no se puede deshacer!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = `eliminarProveedor/${id}`;
+      }
+    });
+  }
+</script>
+{% endblock %}
