@@ -7,31 +7,31 @@
     <div class="col-md-8">
         <div class="card shadow-lg border-0 rounded-4">
             <div class="card-body p-5" style="background-color: #feffff;">
-                <h2 class="text-center text-success mb-4">Nuevo Lote</h2>
+                <h2 class="text-center text-primary mb-4">Nuevo Lote</h2>
                 <hr class="mb-4">
                 <form id="frm_nuevo_lote" method="post" action="/guardarLote/" enctype="multipart/form-data">
                     {% csrf_token %}
 
                     <!-- Alimento -->
-                    <div class="mb-4">
-                        <label for="alimento" class="form-label fw-semibold">Alimento</label>
-                        <select name="alimento" id="alimento" class="form-select rounded-3 shadow-sm" required>
-                            <option value="">Seleccione un alimento</option>
-                            {% for alimento in alimentos %}
+                    <div class="form-floating mb-4">
+                        <select name="alimento_id" id="alimento_id" class="form-select rounded-3 shadow-sm" required>
+                            <option value="" disabled selected>Seleccione un alimento</option>
+                            {% for alimento in Alimentos %}
                                 <option value="{{ alimento.id }}">{{ alimento.nombre }}</option>
                             {% endfor %}
                         </select>
+                        <label for="alimento_id">Alimento</label>
                     </div>
 
                     <!-- Proveedor -->
-                    <div class="mb-4">
-                        <label for="proveedor" class="form-label fw-semibold">Proveedor</label>
-                        <select name="proveedor" id="proveedor" class="form-select rounded-3 shadow-sm" required>
-                            <option value="">Seleccione un proveedor</option>
-                            {% for proveedor in proveedores %}
+                    <div class="form-floating mb-4">
+                        <select name="proveedor_id" id="proveedor_id" class="form-select rounded-3 shadow-sm" required>
+                            <option value="" disabled selected>Seleccione un proveedor</option>
+                            {% for proveedor in Proveedores %}
                                 <option value="{{ proveedor.id }}">{{ proveedor.nombre }}</option>
                             {% endfor %}
                         </select>
+                        <label for="proveedor_id">Proveedor</label>
                     </div>
 
                     <!-- Fecha de vencimiento -->
@@ -43,18 +43,18 @@
                     <!-- Cantidad -->
                     <div class="form-floating mb-4">
                         <input type="number" name="cantidad" id="cantidad" class="form-control rounded-3 shadow-sm" min="1" required>
-                        <label for="cantidad">Cantidad (unidades)</label>
+                        <label for="cantidad">Cantidad</label>
                     </div>
 
-                    <!-- PDF Factura -->
+                    <!-- PDF de factura -->
                     <div class="mb-4">
-                        <label for="pdf_factura" class="form-label fw-semibold">Factura (PDF)</label>
+                        <label for="pdf_factura" class="form-label fw-semibold">Factura del lote (PDF)</label>
                         <input type="file" name="pdf_factura" id="pdf_factura" class="form-control rounded-3 shadow-sm">
                     </div>
 
                     <!-- Botones -->
                     <div class="text-center mt-4">
-                        <button class="btn btn-success btn-lg px-4 me-2 rounded-pill shadow" type="submit">
+                        <button class="btn btn-primary btn-lg px-4 me-2 rounded-pill shadow" type="submit">
                             <i class="fa fa-save me-1"></i> Guardar
                         </button>
                         <a href="/listaLotes/" class="btn btn-outline-danger btn-lg px-4 rounded-pill shadow">
@@ -71,21 +71,31 @@
 <script>
     $("#frm_nuevo_lote").validate({
         rules: {
-            alimento: { required: true },
-            proveedor: { required: true },
-            fecha_vencimiento: { required: true, date: true },
-            cantidad: { required: true, min: 1 },
-            pdf_factura: { extension: "pdf" }
+            alimento_id: "required",
+            proveedor_id: "required",
+            fecha_vencimiento: {
+                required: true,
+                date: true
+            },
+            cantidad: {
+                required: true,
+                number: true,
+                min: 1
+            },
+            pdf_factura: {
+                extension: "pdf"
+            }
         },
         messages: {
-            alimento: { required: "Seleccione un alimento" },
-            proveedor: { required: "Seleccione un proveedor" },
+            alimento_id: "Seleccione un alimento",
+            proveedor_id: "Seleccione un proveedor",
             fecha_vencimiento: {
-                required: "Ingrese la fecha de vencimiento",
-                date: "Ingrese una fecha válida"
+                required: "Ingrese una fecha de vencimiento válida",
+                date: "Formato de fecha no válido"
             },
             cantidad: {
                 required: "Ingrese una cantidad",
+                number: "Debe ser un número válido",
                 min: "Debe ser al menos 1"
             },
             pdf_factura: {
