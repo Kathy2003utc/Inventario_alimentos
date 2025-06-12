@@ -50,13 +50,19 @@
                     <!-- PDF Factura -->
                     <div class="mb-4">
                         <label for="pdf_factura" class="form-label fw-semibold">Factura en PDF</label>
+                        <br>
                         <input type="file" name="pdf_factura" id="pdf_factura" class="form-control rounded-3 shadow-sm">
                         {% if loteEditar.pdf_factura %}
-                            <div class="mt-3 text-center">
-                                <a href="{{ loteEditar.pdf_factura.url }}" target="_blank" class="btn btn-outline-secondary rounded-pill shadow-sm">
-                                    Ver archivo actual
-                                </a>
-                            </div>
+                            <br>
+                            <iframe 
+                                src="{{ loteEditar.pdf_factura.url }}#page=1" 
+                                width="300" 
+                                height="200" 
+                                style="border: 1px solid #ddd; background: #f8f9fa;" 
+                                title="Vista previa del documento" 
+                                type="application/pdf">
+                            </iframe>
+                            <br>
                         {% endif %}
                     </div>
 
