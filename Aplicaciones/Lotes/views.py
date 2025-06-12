@@ -65,8 +65,8 @@ def procesarEdicionLote(request):
         id = request.POST['id']
         lote = get_object_or_404(Lote, id=id)
 
-        alimento_id = request.POST['alimento']
-        proveedor_id = request.POST['proveedor']
+        alimento_id = request.POST['alimento_id']
+        proveedor_id = request.POST['proveedor_id']
         fecha_vencimiento = request.POST['fecha_vencimiento']
         cantidad = request.POST['cantidad']
         pdf_factura = request.FILES.get('pdf_factura')

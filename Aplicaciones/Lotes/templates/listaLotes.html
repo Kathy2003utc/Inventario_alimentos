@@ -57,7 +57,7 @@
                 <td class="text-center">
                   <a href="/editarLote/{{ lote.id }}" class="btn btn-outline-warning btn-sm" title="Editar">
                     <i class="bi bi-pencil"></i>
-                  </a>
+                  </a><br><br>
                   <a href="#" class="btn btn-outline-danger btn-sm" title="Eliminar" onclick="confirmarEliminacion('{{ lote.id }}')">
                     <i class="bi bi-trash"></i>
                   </a>
@@ -89,21 +89,16 @@
     });
   }
 </script>
+
 <script>
-    $(document).ready(function() {
-        let table = new DataTable('#tbl_lotes', {
-            language: {
-                url: 'https://cdn.datatables.net/plug-ins/2.3.1/i18n/es-ES.json'
-            },
-            dom: 'Bfrtip', 
-            buttons: [
-                'copy',
-                'csv',
-                'excel',
-                'pdf',
-                'print'
-            ]
-        });
-    });
+  $('#tbl_lotes').DataTable({
+      dom: 'Bfrtip', 
+      buttons: ['copy', 'csv', 'excel', 'pdf', 'print'],
+
+      language: {
+          url: 'https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json'
+      }
+  });
+
 </script>
 {% endblock %}

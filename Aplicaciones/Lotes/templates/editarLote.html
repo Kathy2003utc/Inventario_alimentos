@@ -13,60 +13,42 @@
                     {% csrf_token %}
                     <input type="hidden" name="id" value="{{ loteEditar.id }}">
 
-                    <!-- Alimento -->
-                    <div class="mb-4">
-                        <label for="alimento" class="form-label fw-semibold">Alimento</label>
-                        <select class="form-select rounded-3 shadow-sm" name="alimento" id="alimento" required>
-                            <option value="">Seleccione un alimento</option>
-                            {% for alimento in alimentos %}
-                                <option value="{{ alimento.id }}" {% if loteEditar.alimento.id == alimento.id %}selected{% endif %}>{{ alimento.nombre }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
+                    <label for="alimento_id">Alimento</label>
+                    <select name="alimento_id" id="alimento_id" class="form-select" required>
+                        <option value="">Seleccione un alimento</option>
+                        {% for alimento in alimentos %}
+                            <option value="{{ alimento.id }}" {% if loteEditar.alimento.id == alimento.id %}selected{% endif %}>{{ alimento.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+                    <label for="proveedor_id">Proveedor</label>
+                    <select name="proveedor_id" id="proveedor_id" class="form-select" required>
+                        <option value="">Seleccione un proveedor</option>
+                        {% for proveedor in proveedores %}
+                            <option value="{{ proveedor.id }}" {% if loteEditar.proveedor.id == proveedor.id %}selected{% endif %}>{{ proveedor.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+                    <label for="fecha_vencimiento">Fecha de vencimiento</label>
+                    <input type="date" name="fecha_vencimiento" id="fecha_vencimiento" class="form-control" value="{{ loteEditar.fecha_vencimiento|date:'Y-m-d' }}" required>
+                    <br>
+                    <label for="cantidad">Cantidad</label>
+                    <input type="number" name="cantidad" id="cantidad" class="form-control" min="1" value="{{ loteEditar.cantidad }}" required>
+                    <br>
+                    <label for="pdf_factura" class="form-label fw-semibold">Factura del lote (PDF)</label>
+                    <input type="file" name="pdf_factura" id="pdf_factura" class="form-control">
 
-                    <!-- Proveedor -->
-                    <div class="mb-4">
-                        <label for="proveedor" class="form-label fw-semibold">Proveedor</label>
-                        <select class="form-select rounded-3 shadow-sm" name="proveedor" id="proveedor" required>
-                            <option value="">Seleccione un proveedor</option>
-                            {% for proveedor in proveedores %}
-                                <option value="{{ proveedor.id }}" {% if loteEditar.proveedor.id == proveedor.id %}selected{% endif %}>{{ proveedor.nombre }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <!-- Fecha de vencimiento -->
-                    <div class="form-floating mb-4">
-                        <input type="date" name="fecha_vencimiento" id="fecha_vencimiento" class="form-control rounded-3 shadow-sm" value="{{ loteEditar.fecha_vencimiento|date:'Y-m-d' }}" required>
-                        <label for="fecha_vencimiento">Fecha de vencimiento</label>
-                    </div>
-
-                    <!-- Cantidad -->
-                    <div class="form-floating mb-4">
-                        <input type="number" name="cantidad" id="cantidad" class="form-control rounded-3 shadow-sm" value="{{ loteEditar.cantidad }}" min="1" placeholder="Cantidad" required>
-                        <label for="cantidad">Cantidad</label>
-                    </div>
-
-                    <!-- PDF Factura -->
-                    <div class="mb-4">
-                        <label for="pdf_factura" class="form-label fw-semibold">Factura en PDF</label>
+                    {% if loteEditar.pdf_factura %}
                         <br>
-                        <input type="file" name="pdf_factura" id="pdf_factura" class="form-control rounded-3 shadow-sm">
-                        {% if loteEditar.pdf_factura %}
-                            <br>
-                            <iframe 
-                                src="{{ loteEditar.pdf_factura.url }}#page=1" 
-                                width="300" 
-                                height="200" 
-                                style="border: 1px solid #ddd; background: #f8f9fa;" 
-                                title="Vista previa del documento" 
-                                type="application/pdf">
-                            </iframe>
-                            <br>
-                        {% endif %}
-                    </div>
+                        <iframe 
+                            src="{{ loteEditar.pdf_factura.url }}#page=1" 
+                            width="100%" 
+                            height="200" 
+                            style="border: 1px solid #ddd; background: #f8f9fa;" 
+                            title="Vista previa del documento">
+                        </iframe>
+                    {% endif %}
 
-                    <!-- Botones -->
                     <div class="text-center mt-4">
                         <button type="submit" class="btn btn-primary btn-lg px-4 me-2 rounded-pill shadow">
                             <i class="fa fa-save me-1"></i> Actualizar
@@ -81,31 +63,47 @@
     </div>
 </div>
 
-<!-- jQuery Validation -->
 <script>
+$(document).ready(function () {
     $("#frm_editar_lote").validate({
         rules: {
-            alimento: { required: true },
-            proveedor: { required: true },
-            fecha_vencimiento: { required: true, date: true },
-            cantidad: { required: true, digits: true, min: 1 },
-            pdf_factura: { extension: "pdf" }
+            "alimento_id": {
+                required: true
+            },
+            "proveedor_id": {
+                required: true
+            },
+            "fecha_vencimiento": {
+                required: true,
+                date: true
+            },
+            "cantidad": {
+                required: true,
+                number: true,
+                min: 1
+            }
         },
         messages: {
-            alimento: { required: "Seleccione un alimento" },
-            proveedor: { required: "Seleccione un proveedor" },
-            fecha_vencimiento: { required: "Seleccione la fecha de vencimiento", date: "Fecha no válida" },
-            cantidad: {
-                required: "Ingrese la cantidad",
-                digits: "Solo se permiten números enteros",
-                min: "La cantidad mínima es 1"
+            "alimento_id": {
+                required: "Por favor, seleccione un alimento"
             },
-            pdf_factura: { extension: "Solo se permite archivos PDF" }
+            "proveedor_id": {
+                required: "Por favor, seleccione un proveedor"
+            },
+            "fecha_vencimiento": {
+                required: "Por favor, ingrese la fecha de vencimiento",
+                date: "Ingrese una fecha válida"
+            },
+            "cantidad": {
+                required: "Por favor, ingrese la cantidad",
+                number: "Debe ser un número válido",
+                min: "Debe ser al menos 1"
+            }
         }
     });
+});
 </script>
 
-<!-- Configuración de FileInput -->
 <script>
     $("#pdf_factura").fileinput({
         language: "es",

@@ -13,22 +13,19 @@
                     {% csrf_token %}
 
                     <!-- Nombre -->
-                    <div class="form-floating mb-4">
-                        <input type="text" name="nombre" id="nombre" class="form-control rounded-3 shadow-sm" placeholder="Nombre del proveedor" required>
-                        <label for="nombre">Nombre del proveedor</label>
-                    </div>
+                    <label for="nombre">Nombre del proveedor</label>
+                    <input type="text" name="nombre" id="nombre" class="form-control">
+                    <br>
 
                     <!-- Teléfono -->
-                    <div class="form-floating mb-4">
-                        <input type="text" name="telefono" id="telefono" class="form-control rounded-3 shadow-sm" placeholder="Teléfono del proveedor" required>
-                        <label for="telefono">Teléfono del proveedor</label>
-                    </div>
+                    <label for="telefono">Teléfono del proveedor</label>
+                    <input type="text" name="telefono" id="telefono" class="form-control">
+                    <br>
 
                     <!-- Certificado Sanitario PDF -->
-                    <div class="mb-4">
-                        <label for="pdf_certificado_sanitario" class="form-label fw-semibold">Certificado Sanitario (PDF)</label>
-                        <input type="file" name="pdf_certificado_sanitario" id="pdf_certificado_sanitario" class="form-control rounded-3 shadow-sm">
-                    </div>
+                    <label for="pdf_certificado_sanitario">Certificado Sanitario (PDF)</label>
+                    <input type="file" name="pdf_certificado_sanitario" id="pdf_certificado_sanitario" class="form-control">
+                    <br>
 
                     <!-- Botones -->
                     <div class="text-center mt-4">
@@ -45,41 +42,43 @@
     </div>
 </div>
 
-<!-- Validación con jQuery -->
 <script>
     $("#frm_nuevo_proveedor").validate({
         rules: {
-            nombre: {
+            "nombre": {
                 required: true,
-                minlength: 2,
+                minlength: 3,
                 maxlength: 100
             },
-            telefono: {
+            "telefono": {
                 required: true,
-                minlength: 7,
-                maxlength: 20
+                digits: true,
+                minlength: 10,
+                maxlength: 10
             },
-            pdf_certificado_sanitario: {
-                extension: "pdf"
+            "pdf_certificado_sanitario": {
+                required: true,
             }
         },
         messages: {
-            nombre: {
+            "nombre": {
                 required: "Por favor, ingrese el nombre del proveedor",
-                minlength: "Debe tener al menos 2 caracteres",
+                minlength: "Debe tener al menos 3 caracteres",
                 maxlength: "No debe exceder los 100 caracteres"
             },
-            telefono: {
-                required: "Por favor, ingrese el teléfono del proveedor",
-                minlength: "Debe tener al menos 7 dígitos",
-                maxlength: "No debe exceder los 20 caracteres"
+            "telefono": {
+                required: "Por favor, ingrese el número de teléfono",
+                digits: "Solo se permiten números",
+                minlength: "El teléfono debe tener exactamente 10 dígitos",
+                maxlength: "El teléfono debe tener exactamente 10 dígitos"
             },
-            pdf_certificado_sanitario: {
-                extension: "Solo se permite subir archivos en formato PDF"
+            "pdf_certificado_sanitario": {
+                required:"Por favor, ingrese el certificado sanitario"
             }
         }
     });
 </script>
+
 
 <!-- Configuración de FileInput -->
 <script>

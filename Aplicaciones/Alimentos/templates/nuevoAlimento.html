@@ -13,22 +13,20 @@
                     {% csrf_token %}
 
                     <!-- Nombre -->
-                    <div class="form-floating mb-4">
-                        <input type="text" name="nombre" id="nombre" class="form-control rounded-3 shadow-sm" placeholder="Nombre del alimento" required>
-                        <label for="nombre">Nombre del alimento</label>
-                    </div>
+            
+                    <label for="nombre">Nombre del alimento</label>
+                    <input type="text" name="nombre" id="nombre" class="form-control">
+                    <br>
 
                     <!-- Tipo -->
-                    <div class="form-floating mb-4">
-                        <input type="text" name="tipo" id="tipo" class="form-control rounded-3 shadow-sm" placeholder="Tipo de alimento" required>
-                        <label for="tipo">Tipo de alimento</label>
-                    </div>
+                    <label for="tipo">Tipo de alimento</label>
+                    <input type="text" name="tipo" id="tipo" class="form-control">
+                    <br>
 
                     <!-- Imagen -->
-                    <div class="mb-4">
-                        <label for="foto_alimento" class="form-label fw-semibold">Foto del alimento</label>
-                        <input type="file" name="foto_alimento" id="foto_alimento" class="form-control rounded-3 shadow-sm">
-                    </div>
+                    <label for="foto_alimento">Foto del alimento</label>
+                    <input type="file" name="foto_alimento" id="foto_alimento" class="form-control">
+                    <br>
 
                     <!-- Botones -->
                     <div class="text-center mt-4">
@@ -47,39 +45,42 @@
 
 <!-- Validación con jQuery -->
 <script>
+$(document).ready(function () {
     $("#frm_nuevo_alimento").validate({
         rules: {
-            nombre: {
+            "nombre": {
                 required: true,
                 minlength: 2,
                 maxlength: 100
             },
-            tipo: {
+            "tipo": {
                 required: true,
                 minlength: 2,
                 maxlength: 50
             },
-            foto_alimento: {
-                extension: "jpg|jpeg|png"
+            "foto_alimento": {
+                required: true
             }
         },
         messages: {
-            nombre: {
+            "nombre": {
                 required: "Por favor, ingrese el nombre del alimento",
                 minlength: "Debe tener al menos 2 caracteres",
                 maxlength: "No debe exceder los 100 caracteres"
             },
-            tipo: {
+            "tipo": {
                 required: "Por favor, ingrese el tipo de alimento",
                 minlength: "Debe tener al menos 2 caracteres",
                 maxlength: "No debe exceder los 50 caracteres"
             },
-            foto_alimento: {
-                extension: "Solo se permiten archivos JPG, JPEG o PNG"
+            "foto_alimento": {
+                required: "Por favor, ingrese la foto del alimento",  
             }
         }
     });
+});
 </script>
+
 
 <!-- Configuración de FileInput -->
 <script>
